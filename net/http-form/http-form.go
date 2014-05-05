@@ -5,6 +5,10 @@ import (
 	"html/template"
 	"net/http"
 	"regexp"
+	"crypto/md5"
+	"io"
+	"time"
+	"strconv"
 	"log"
 )
 
@@ -20,17 +24,31 @@ func welcome(writer http.ResponseWriter, request *http.Request){
 
 func register(writer http.ResponseWriter, request *http.Request){
 	if request.Method == "GET" {
-		// Load template file:
+		// Read system timestamp to generate token:
+		current := time.Now().Unix()
+		_md5 := md5.New()
+		io.WriteString(_md5, strconv.FormatInt(current, 10))
+		token := fmt.Sprintf("%x", _md5.Sum(nil))		
+
+		// Load template file and send token to client:
 		template, _ := template.ParseFiles("register.gtpl")
-		template.Execute(writer, nil)
+		template.Execute(writer, token)
 	} else {
 		// Parse form fields:
 		request.ParseForm()
 		fmt.Println(request.Form)
+		formTokenArray := request.Form["token"]
 		formNameArray := request.Form["name"]
 		formGenderArray := request.Form["gender"]
 		formLanguageArray := request.Form["language"]
-		formPlatformArray := request.Form["platform"]		
+		formPlatformArray := request.Form["platform"]	
+
+		// Check token:
+		if formTokenArray[0] == "" {
+			fmt.Fprintf(writer, "No token!\n")
+		} else {
+			fmt.Fprintf(writer, "Your token: %s\n", formTokenArray[0])
+		}
 
 		// Check text length and format:
 		if  len(formNameArray[0]) <= 0 {

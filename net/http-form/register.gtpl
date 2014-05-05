@@ -23,6 +23,7 @@ Platform:
 <option value="WindowsPhone">WindowsPhone</option>
 </select>
 <BR/>
+<input type="hidden" name="token" value="{{.}}"/>
 <input type="submit" value="submit"/>
 </form>
 </body>

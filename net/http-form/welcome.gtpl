@@ -3,6 +3,6 @@
 <title>Welcome</title>
 </head>
 <body>
-<a href="/login/">Go to login</a>
+<a href="/register/">Go to Register</a>
 </body>
 </html>

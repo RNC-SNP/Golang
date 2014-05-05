@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"regexp"
 	"crypto/md5"
+	"os"
 	"io"
 	"time"
 	"strconv"
@@ -80,8 +81,40 @@ func checkField(field string, values []string)bool {
 	return false
 }
 
+func upload(writer http.ResponseWriter, request *http.Request) {
+	if request.Method == "GET" {
+		// Load template file:
+		template, _ := template.ParseFiles("upload.gtpl")
+		template.Execute(writer, nil)	
+	} else {
+		// Parse file from client:
+		request.ParseMultipartForm(32 << 20)
+		
+		// Get file handler:
+		userFile, handler, error := request.FormFile("userFile")
+		if error !=nil {
+			fmt.Println(error)
+			return
+		}
+		defer userFile.Close()
+		
+		// Write header:
+		fmt.Fprintf(writer, "%v", handler.Header)
+
+		// Store file in server:
+		serverFile, error := os.OpenFile(handler.Filename, os.O_WRONLY|os.O_CREATE, 0777)
+		if error !=nil {
+			fmt.Println(error)
+			return
+		}
+		defer serverFile.Close()
+		io.Copy(serverFile, userFile)
+	}
+}
+
 func main(){
 	http.HandleFunc("/", welcome)
+	http.HandleFunc("/upload/", upload)
 	http.HandleFunc("/register/", register)
 	error := http.ListenAndServe(":12345", nil)
 	if error != nil {

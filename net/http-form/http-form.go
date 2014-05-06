@@ -18,12 +18,25 @@ func welcome(writer http.ResponseWriter, request *http.Request){
 		// Load template file:
 		template, _ := template.ParseFiles("welcome.gtpl")
 		template.Execute(writer, nil)
+
+		// Set Cookie:
+		expire := time.Now().AddDate(0, 0, 1)
+		cookie := http.Cookie{Name: "cookieName", Value: "cookieValue", Path: "/", Expires: expire, MaxAge: 86400}
+		http.SetCookie(writer, &cookie)
 	} else {
 		fmt.Fprintf(writer, "Invalid request!")
 	}
 }
 
+func printCookies(writer http.ResponseWriter, request *http.Request){
+	for _, cookie := range request.Cookies() {
+		fmt.Fprint(writer, "Cookie: %s", cookie)
+	}
+}
+
 func register(writer http.ResponseWriter, request *http.Request){
+	printCookies(writer, request)
+	
 	if request.Method == "GET" {
 		// Read system timestamp to generate token:
 		current := time.Now().Unix()
@@ -82,6 +95,8 @@ func checkField(field string, values []string)bool {
 }
 
 func upload(writer http.ResponseWriter, request *http.Request) {
+	printCookies(writer, request)
+	
 	if request.Method == "GET" {
 		// Load template file:
 		template, _ := template.ParseFiles("upload.gtpl")

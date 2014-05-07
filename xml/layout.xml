@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ViewGroup IsVisible="true">
+	<View>
+		<Width>100dp</Width>
+		<Height>58dp</Height>
+	</View>
+	<View>
+		<Width>527dp</Width>
+		<Height>345dp</Height>
+	</View>
+</ViewGroup>

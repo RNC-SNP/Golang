@@ -17,11 +17,11 @@ type ViewGroup struct {
 	// Declare element's children:
 	Views []View `xml:"View"`
 	// Append its inner xml:
-	Description string `xml:",innerxml"`
+	//Description string `xml:",innerxml"`
 }
 
 type View struct {
-	XMLName xml.Name `xml:"View"`
+	//XMLName xml.Name `xml:"View"`
 	Width string `xml:"Width"`
 	Height string `xml:"Height"`
 }
@@ -42,12 +42,24 @@ func main() {
 		return
 	}
 
-	// Parse xml data:
-	v := ViewGroup{}
-	err = xml.Unmarshal(data, &v)
+	// Parse xml data to object:
+	viewGroup1 := ViewGroup{}
+	err = xml.Unmarshal(data, &viewGroup1)
 	if err != nil {
 		fmt.Printf("error: %v", err)
 		return
 	}
-	fmt.Println(v)
+	fmt.Println(viewGroup1)
+
+	// Parse object to xml data:
+	viewGroup2 := &ViewGroup{IsVisible: "false"}
+	viewGroup2.Views = append(viewGroup2.Views, View{"12dp", "34dp"})
+	viewGroup2.Views = append(viewGroup2.Views, View{"56dp", "78dp"})
+	output, err := xml.MarshalIndent(viewGroup2, "", "")
+	if err != nil {
+		fmt.Printf("error: %v\n", err)
+	}
+	// Write default xml header:
+	//os.Stdout.Write([]byte{xml.Header})
+	os.Stdout.Write(output)
 }

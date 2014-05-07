@@ -7,12 +7,16 @@ import (
 	"os"
 )
 
-// Define struct types to describe xml doc's structure:
+// Define struct type with reflection tags to describe the xml doc's structure:
 
 type ViewGroup struct {
+	// Declare element's name:
 	XMLName xml.Name `xml:"ViewGroup"`
+	// Declare element's attribute:
 	IsVisible string `xml:"IsVisible,attr"`
+	// Declare element's children:
 	Views []View `xml:"View"`
+	// Append its inner xml:
 	Description string `xml:",innerxml"`
 }
 

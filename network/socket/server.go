@@ -68,7 +68,7 @@ func handleUDPClient(conn *net.UDPConn) {
 	}
 	// Write data to client:
 	datetime := time.Now().String()
-	conn.WriteToUDP([]byte(datetime, addr)
+	conn.WriteToUDP([]byte(datetime), addr)
 }
 
 func main() {

@@ -50,7 +50,7 @@ func main() {
 	fmt.Printf("Rows affected after update: %d\n", rowsAffectedAfterUpdate)
 
 	// Query data:
-	rows, err := db.Query("SELECT * FROM `DB_USER`.`TB_USER` WHERE EMAIL LIKE '%_@%'")
+	rows, err := db.Query("SELECT * FROM `DB_USER`.`TB_USER` WHERE EMAIL LIKE '_@%'")
 	checkErr(err)
 	fmt.Println("Query result:")
 	for rows.Next() {

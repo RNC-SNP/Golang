@@ -60,17 +60,17 @@ func main() {
 	}
 
 	// Use HSET command to add k-v to HashMap:
-	_, err = conn.Do("HSET", "userHashMap", "name", "Rinc")
+	_, err = conn.Do("HSET", "userKVSet", "name", "Rinc")
 	checkErr(err)
-	_, err = conn.Do("HSET", "userHashMap", "email", "i@RincLiu.com")
+	_, err = conn.Do("HSET", "userKVSet", "email", "i@RincLiu.com")
 	checkErr(err)
 	// Use HKEYS command to get HashMap keys:
-	mapKeys, err := redis.Values(conn.Do("HKEYS", "userHashMap"))
+	kvsetKeys, err := redis.Values(conn.Do("HKEYS", "userKVSet"))
 	checkErr(err)
-	fmt.Println("Items in HashMap:")
-	for _, itemKey := range mapKeys {
+	fmt.Println("Items in KVSet:")
+	for _, itemKey := range kvsetKeys {
 		// Use HGET command to get item value in HashMap by key:
-		itemValue, err := conn.Do("HGET", "userHashMap", itemKey)
+		itemValue, err := conn.Do("HGET", "userKVSet", itemKey)
 		checkErr(err)
 		fmt.Printf("%s: %s\n", itemKey, itemValue)
 	}

@@ -27,11 +27,14 @@ func main() {
 	}
 	
 	// Use RPUSH command to add items in list:
-	_, err = conn.Do("RPUSH", "platformList", "Android")
-	checkErr(err)
 	_, err = conn.Do("RPUSH", "platformList", "iOS")
 	checkErr(err)
+	_, err = conn.Do("RPUSH", "platformList", "Android")
+	checkErr(err)
 	_, err = conn.Do("RPUSH", "platformList", "WindowsPhone")
+	checkErr(err)
+	// Use SORT command to sort list items:
+	_, err = conn.Do("SORT", "platformList", "ASC", "ALPHA", "LIMIT", "0", "2")
 	checkErr(err)
 	// Use LRANGE command to get list items:
 	listItems, err := redis.Values(conn.Do("LRANGE", "platformList", 0, 2))

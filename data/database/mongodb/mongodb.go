@@ -30,6 +30,11 @@ func main() {
 	// Insert values:
 	err = collection.Insert(&User{"Adam", 14}, &User{"Bob", 19}, &User{"Chris", 10}, &User{"Dennis", 35}, &User{"Emma", 26}, &User{"Frank", 41})
 	checkErr(err)
+
+	// Update values:
+	// UPDATE users SET age = 15 WHERE name = "Adam";
+	err = collection.Update(bson.M{"name": "Adam"}, bson.M{"name": "Adam", "age": 15})
+	checkErr(err)
 	
 	// Query and sort:
 	// SELECT * FROM users WHERE age >= 10 && age <= 50 ORDER BY name ASC, age DESC;

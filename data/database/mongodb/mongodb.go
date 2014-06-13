@@ -25,25 +25,19 @@ func main() {
 	err = collection.Insert(&User{"Adam", 14}, &User{"Bob", 19}, &User{"Chris", 10}, &User{"Dennis", 35}, &User{"Emma", 26}, &User{"Frank", 41})
 	checkErr(err)
 
-	u := User{}
+	u := User{}// Temp var to store query result
 	
-	// Query first result:
-	err = collection.Find(bson.M{"name": "Emma"}).One(&u)
-	checkErr(err)
-	fmt.Println("Emma's age:", u.Age)
-
-	// Query all and sort:
-	query1 := collection.Find(bson.M{"age": bson.M{"$gte": 10, "$lte": 50}}).Sort("name", "-age")
-
+	// Query and sort:
+	// SELECT * FROM users WHERE age >= 10 && age <= 50 ORDER BY name ASC, age DESC;
+	query := collection.Find(bson.M{"age": bson.M{"$gte": 10, "$lte": 50}}).Sort("name", "-age")
 	// Travel result set:
-	iter := query1.Iter()
+	iter := query.Iter()
 	for iter.Next(&u) {
     		fmt.Printf("%s: %d\n", u.Name, u.Age)
 	}
 	// Close iter:
-	if err := iter.Close(); err != nil {
-    		panic(err)
-	}
+	err = iter.Close()
+	checkErr(err)
 }
 
 func checkErr(err error) {

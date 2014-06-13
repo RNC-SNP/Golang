@@ -32,7 +32,7 @@ func main() {
 	checkErr(err)
 
 	// Update values:
-	// UPDATE users SET age = 15 WHERE name = "Adam";
+	// UPDATE users SET name = 'Adam', age = 15 WHERE name = 'Adam';
 	err = collection.Update(bson.M{"name": "Adam"}, bson.M{"name": "Adam", "age": 15})
 	checkErr(err)
 	

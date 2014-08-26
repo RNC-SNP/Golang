@@ -1,4 +1,4 @@
-Golang-Demo
+Go-Demo
 ===========
 
 Demos of Golang.

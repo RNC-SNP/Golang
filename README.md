@@ -1,4 +1,4 @@
-Go-Demo
+Go-Snippets
 ===========
 
-Demos of Golang.
+Code Snippets of Golang.
